@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vinex</title>
+  <link rel="icon" href="uploads/logo-main.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    :root {
+      --brand: #2B82C8;
+      --brand-dark: #0E4A78;
+      --brand-rgb: 43,130,200;
+      --brand-dark-rgb: 14,74,120;
+      --primary: var(--brand);
+      --accent: #4CC3E6;
+      --accent-rgb: 76,195,230;
+      --bg: #ffffff;
+      --bg-light: #f4fbff;
+      --text: #0F1724;
+      --muted: #6b7280;
+      --border: rgba(var(--brand-dark-rgb),0.08);
+      --radius: 10px;
+      --shadow: 0 8px 30px rgba(var(--brand-dark-rgb),0.12);
+      --transition: 0.22s ease;
+      --logo-size: 50px;
+      --header-h: 72px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: var(--text);
+      background: linear-gradient(135deg, #eaf2ff 0%, #f7fbff 100%);
+      min-height: 100vh;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 18px rgba(var(--brand-dark-rgb), 0.04);
+      z-index: 1000;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand .logo { 
+      width: var(--logo-size); 
+      height: var(--logo-size); 
+    }
+
+    .brand-title {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: 30px;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-left: 4px;
+    }
+
+    .site-nav { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 18px; align-items:center; }
+    .site-nav a { color: var(--primary); text-decoration: none; font-weight:600; padding: 8px 10px; border-radius:8px; }
+    .site-nav a:hover { background: var(--bg-light); }
+
+    .btn-link {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-weight: 500;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 8px 2px;
+      border-radius: 8px;
+      transition: var(--transition);
+      font-size: 14px;
+    }
+
+    .btn-link:hover {
+      background: var(--bg-light);
+    }
+
+    .profile-wrap { position: relative; display: flex; align-items: center; gap: 12px; }
+    .profile-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; border: none; cursor: pointer; padding: 6px 8px; border-radius: 8px;
+    }
+    .profile-avatar { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; box-shadow: var(--shadow); }
+    .profile-meta { text-align: right; display: none; }
+    .profile-name { font-weight: 700; color: var(--primary); font-size: 14px; }
+    .profile-role { font-size: 12px; color: var(--muted); }
+
+    .profile-menu {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow);
+      min-width: 160px; overflow: hidden; display: none;
+    }
+    .profile-menu a, .profile-menu button { display: block; padding: 10px 12px; text-decoration: none; color: var(--text); background: transparent; border: none; width: 100%; text-align: left; cursor: pointer; }
+    .profile-menu a:hover, .profile-menu button:hover { background: var(--bg-light); }
+
+    main { padding-top: calc(var(--header-h) + 24px); }
+
+    .container {
+      padding: 24px;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+    }
+
+    .controls { display: flex; gap: 12px; align-items: center; margin-bottom: 18px; flex-wrap:wrap; }
+    .controls select, .controls input { padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: #fff; }
+    .controls .btn { padding: 10px 14px; border-radius: 8px; border: none; cursor: pointer; font-weight:700; color: var(--primary); background: var(--brand); }
+
+    .cards-area { padding: 0; }
+    .projects-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+
+    .pagination { display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 24px; flex-wrap: wrap; }
+    .pagination button, .pagination a { padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: #fff; color: var(--primary); cursor: pointer; font-weight: 600; }
+    .pagination button:hover, .pagination a:hover { background: var(--bg-light); }
+    .pagination button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .project-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); display: flex; gap: 16px; padding: 18px; align-items: flex-start; }
+    .project-card .thumb { width: 220px; height: 130px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+    .project-card .meta { flex: 1; }
+    .project-card h3 { margin-bottom: 6px; color: var(--primary); }
+    .project-card p { color: var(--muted); margin-bottom: 8px; }
+    .project-info { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .chip { background: var(--bg-light); border:1px solid var(--border); padding:6px 8px; border-radius: 999px; font-size:13px; color:var(--primary); }
+    .project-actions { margin-left: auto; display:flex; gap:8px; align-items:center; }
+    .btn-outline { background:transparent; border:1px solid var(--primary); color:var(--primary); padding:8px 12px; border-radius:8px; cursor:pointer; }
+    .btn-primary { background:var(--primary); color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+    .site-footer { margin-top: 28px; padding: 28px 0; background: transparent; color: var(--muted); }
+    .footer-inner { max-width:none; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:12px; padding: 0 6%;}
+    .footer-logo { width:48px; height:48px; object-fit:contain; }
+    .footer-bottom {
+      padding: 0 6%;
+      margin-top: 34px;
+    }
+
+    @media (max-width:800px) {
+      :root { --logo-size:48px; }
+      .profile-meta { display:none; }
+      .project-card { flex-direction:column; }
+      .project-card .thumb { width:100%; height:180px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="projects.html">
+      <img src="uploads/logo-main.png" alt="logo" class="logo">
+      <strong class="brand-title">Vinex</strong>
+    </a>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="projects.html">Projects</a>
+      <a href="my-projects.html">My Projects</a>
+      <a href="portfolio.html">Portfolio</a>
+    </nav>
+
+    <div class="profile-wrap">
+      <div class="profile-meta" id="headerProfileMeta" style="display:none; text-align:right;">
+        <div class="profile-name" id="headerProfileName"></div>
+        <div class="profile-role">Mahasiswa</div>
+      </div>
+      <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+        <img src="uploads/pfp.jpg" alt="avatar" class="profile-avatar">
+      </button>
+
+      <div class="profile-menu" id="profileMenu" role="menu" aria-hidden="true">
+        <a href="profile.html" id="profileLink">View Profile</a>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="projects-welcome" id="welcomeSection">
+        <h2>Projects</h2>
+        <p class="muted">Browse all available micro-projects you can request to work on for skill-proof experience.</p>
+      </div>
+
+      <div class="controls">
+        <select id="categoryFilter">
+          <option value="all">All Categories</option>
+        </select>
+        <select id="skillFilter">
+          <option value="all">All Skills</option>
+        </select>
+        <select id="demandFilter">
+          <option value="all">All Demands</option>
+          <option value="Tinggi">Tinggi</option>
+          <option value="Medium">Medium</option>
+          <option value="Rendah">Rendah</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Search projects or companies...">
+        <button class="btn" style="color:#fff;" id="clearFilters">Clear</button>
+      </div>
+
+      <div class="cards-area">
+        <div class="projects-grid" id="projectsGrid">
+        </div>
+      </div>
+
+      <div class="pagination" id="paginationControls">
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="uploads/logo-main.png" alt="logo" class="footer-logo">
+        <div>
+          <p class="muted">Micro projects & skill-proof hub for students and industry partners.</p>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="projects.html">Projects</a>
+        <a href="my-projects.html">My Projects</a>
+        <a href="portfolio.html">Portfolio</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>Copyright © 2025 Vinix Seven Indonesia</small>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const userLogin = localStorage.getItem('userLogin');
+      if (!userLogin) {
+        window.location.href = 'index.html';
+        return;
+      }
+      const userData = JSON.parse(userLogin);
+
+      const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+      const displayName = profileData.fullName || userData.email || 'Student';
+      const headerProfileMeta = document.getElementById('headerProfileMeta');
+      const headerProfileName = document.getElementById('headerProfileName');
+      if (headerProfileName) headerProfileName.textContent = displayName;
+      if (headerProfileMeta) headerProfileMeta.style.display = 'block';
+
+      const profileBtn = document.getElementById('profileBtn');
+      const profileMenu = document.getElementById('profileMenu');
+      let menuOpen = false;
+      profileBtn.addEventListener('click', function(e) {
+        menuOpen = !menuOpen;
+        profileMenu.style.display = menuOpen ? 'block' : 'none';
+        profileBtn.setAttribute('aria-expanded', String(menuOpen));
+      });
+      document.addEventListener('click', function(e) {
+        if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+          menuOpen = false; profileMenu.style.display = 'none'; profileBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      const logoutBtn = document.getElementById('logoutBtn');
+      logoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('userLogin');
+        window.location.href = 'index.html';
+      });
+
+      const seedProjects = [
+        { 
+          id: 1,
+          title: 'Landing Page Sederhana Toko Online',
+          company: 'UMKM Maju Jaya',
+          skills: ['HTML', 'CSS'],
+          cat: 'Web Dev & UI/UX',
+          image:'uploads/coding.jpg',
+          desc: 'Membuat landing page statis berisi banner utama, daftar produk, dan kontak WhatsApp. Halaman tidak perlu interaktif, cukup tampil rapi dan responsif.',
+          demand: 'Tinggi',
+          wage: 'Rp 250rb - Rp 450rb'
+        },
+        { 
+          id: 2,
+          title: 'Wireframe Website Portfolio',
+          company: 'Freelancer Studio',
+          skills: ['Figma', 'Wireframe'],
+          cat: 'Web Dev & UI/UX',
+          image: 'uploads/figma-design.jpg',
+          desc: 'Membuat wireframe sederhana halaman portfolio berisi section Hero, Projects, dan Contact. Tidak perlu warna, hanya struktur layout saja.',
+          demand: 'Medium',
+          wage: 'Rp 150rb - Rp 300rb'
+        },
+        { 
+          id: 3,
+          title: 'Poster Promo Produk',
+          company: 'Toko Segar',
+          skills: ['Canva', 'Design'],
+          cat: 'Brand Design',
+          image: 'uploads/canva-design.jpg',
+          desc: 'Membuat 3 poster promosi sederhana di Canva. Konten meliputi harga, foto produk, dan ajakan beli. Format PNG resolusi Instagram.',
+          demand: 'Rendah',
+          wage: 'Rp 120rb - Rp 250rb'
+        },
+        { 
+          id: 4,
+          title: 'Halaman About Us UMKM',
+          company: 'Craft Lokal',
+          skills: ['HTML', 'CSS'],
+          cat: 'Web Dev & UI/UX',
+          image: 'uploads/coding.jpg',
+          desc: 'Membuat halaman About Us statis berisi cerita usaha, foto pemilik, dan daftar produk. Fokus pada layout bersih dan tipografi.',
+          demand: 'Tinggi',
+          wage: 'Rp 200rb - Rp 350rb'
+        },
+        { 
+          id: 5,
+          title: 'Mini Style Guide Brand',
+          company: 'Cafe Aroma',
+          skills: ['Design', 'Figma'],
+          cat: 'Brand Design',
+          image: 'uploads/figma-design.jpg',
+          desc: 'Menyusun style guide sederhana berisi warna utama, warna sekunder, tipografi, dan contoh komponen tombol.',
+          demand: 'Medium',
+          wage: 'Rp 200rb - Rp 400rb'
+        },
+        { 
+          id: 6,
+          title: 'Clean-up Data Excel Sederhana',
+          company: 'Gudang Sembako',
+          skills: ['Excel', 'Data'],
+          cat: 'Data Science',
+          image: 'uploads/Excel-data.jpg',
+          desc: 'Membersihkan data produk di Excel: merapikan nama produk, menghapus duplikasi, dan mengurutkan berdasarkan kategori.',
+          demand: 'Rendah',
+          wage: 'Rp 100rb - Rp 200rb'
+        },
+        { 
+          id: 7,
+          title: 'Desain Logo Sederhana',
+          company: 'Startup Kreatif',
+          skills: ['Canva', 'Design'],
+          cat: 'Brand Design',
+          image: 'uploads/canva-design.jpg',
+          desc: 'Membuat desain logo sederhana menggunakan Canva. Logo harus mencerminkan kreativitas dan profesionalisme.',
+          demand: 'Medium',
+          wage: 'Rp 150rb - Rp 300rb'
+        },
+        { 
+          id: 8,
+          title: 'Desain Layout Feed Instagram',
+          company: 'Sosmed Boost',
+          skills: ['Canva', 'Design'],
+          cat: 'Sosmed Specialist', 
+          image: 'uploads/canva-design.jpg',
+          desc: 'Membuat 6 konten Instagram estetis dengan tema warna konsisten. Fokus pada keterbacaan dan branding sederhana.',
+          demand: 'Medium',
+          wage: 'Rp 150rb - Rp 350rb'
+        },
+        { 
+          id: 9,
+          title: 'Halaman Contact Form',
+          company: 'Web Basic Co',
+          skills: ['HTML', 'CSS', 'JS'],
+          cat: 'Web Dev & UI/UX',
+          image: 'uploads/coding.jpg',
+          desc: 'Membuat halaman Contact dengan form statis. Form berisi input nama, email, pesan, dan validasi sederhana memakai JavaScript.',
+          demand: 'Tinggi',
+          wage: 'Rp 250rb - Rp 450rb'
+        }
+      ];
+
+      const saved = localStorage.getItem('projectsData');
+      let projects = [];
+      if (saved) {
+        try {
+          projects = JSON.parse(saved);
+          projects = projects.map(p => {
+            if (!p.demand) {
+              const seed = seedProjects.find(s => s.id === p.id);
+              return { ...p, demand: seed ? seed.demand : 'Medium' };
+            }
+            return p;
+          });
+          localStorage.setItem('projectsData', JSON.stringify(projects));
+        } catch (e) {
+          projects = [];
+        }
+      }
+
+      if (!projects || !projects.length) {
+        projects = seedProjects;
+        localStorage.setItem('projectsData', JSON.stringify(projects));
+      }
+
+      const ITEMS_PER_PAGE = 10;
+      let currentPage = 1;
+      let filteredProjects = projects.slice();
+
+      const categoryFilter = document.getElementById('categoryFilter');
+      const skillFilter = document.getElementById('skillFilter');
+      const demandFilter = document.getElementById('demandFilter');
+      const searchInput = document.getElementById('searchInput');
+      const projectsGrid = document.getElementById('projectsGrid');
+      const clearBtn = document.getElementById('clearFilters');
+      const paginationControls = document.getElementById('paginationControls');
+
+      const categories = Array.from(new Set(projects.map(p => p.cat)));
+      categories.forEach(c => {
+        const o = document.createElement('option'); o.value = c; o.textContent = c; categoryFilter.appendChild(o);
+      });
+
+      const skills = Array.from(new Set(projects.flatMap(p => p.skills)));
+      skills.forEach(s => {
+        const o = document.createElement('option'); o.value = s; o.textContent = s; skillFilter.appendChild(o);
+      });
+
+      function renderPagination(totalItems) {
+        paginationControls.innerHTML = '';
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+        
+        if (totalPages <= 1) return;
+
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = '← Previous';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener('click', () => {
+          if (currentPage > 1) {
+            currentPage--;
+            render(filteredProjects);
+            window.scrollTo(0, 0);
+          }
+        });
+        paginationControls.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.textContent = i;
+          if (i === currentPage) btn.classList.add('active');
+          btn.addEventListener('click', () => {
+            currentPage = i;
+            render(filteredProjects);
+            window.scrollTo(0, 0);
+          });
+          paginationControls.appendChild(btn);
+        }
+
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Next →';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener('click', () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            render(filteredProjects);
+            window.scrollTo(0, 0);
+          }
+        });
+        paginationControls.appendChild(nextBtn);
+      }
+
+      function render(list) {
+        projectsGrid.innerHTML = '';
+        const visible = list.filter(p => !['In Progress','Pending Review'].includes(p.status));
+        if (!visible.length) {
+          projectsGrid.innerHTML = '<p class="muted">No projects found for the selected filters.</p>';
+          paginationControls.innerHTML = '';
+          return;
+        }
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const pageItems = visible.slice(start, end);
+        pageItems.forEach(p => {
+          const card = document.createElement('div');
+          card.className = 'project-card';
+          const requestButtonHtml = p.status === 'Pending'
+            ? `<button id="btn-request-${p.id}" class="btn-primary" disabled style="background:#ccc;color:#666;cursor:not-allowed;">Requested</button>`
+            : `<button id="btn-request-${p.id}" class="btn-primary" onclick="requestProject(${p.id})">Request</button>`;
+
+          card.innerHTML = `
+            <img class="thumb" src="${p.image}" alt="${p.title}">
+            <div class="meta">
+              <h3>${p.title}</h3>
+              <p class="muted">${p.company} • ${p.desc}</p>
+                <div class="project-info">
+                  <div class="chip">Demand: ${p.demand}</div>
+                  <div class="chip">Category: ${p.cat}</div>
+                  <div class="chip">${p.wage}</div>
+                  ${p.skills.map(s=>`<div class=\"chip\">${s}</div>`).join('')}
+                </div>
+            </div>
+            <div class="project-actions">
+              <a class="btn-link" onclick="window.open('https://chat.whatsapp.com/FTtZAxlQ8p05miUdCDBHwb')">Chat Sekarang</a>
+              ${requestButtonHtml}
+            </div>
+          `;
+          projectsGrid.appendChild(card);
+        });
+        renderPagination(visible.length);
+
+            window.requestProject = function(id) {
+              const all = JSON.parse(localStorage.getItem('projectsData') || '[]');
+              const idx = all.findIndex(x=>x.id===id);
+              if(idx>-1) {
+                all[idx].status = 'Pending';
+                localStorage.setItem('projectsData', JSON.stringify(all));
+                const btn = document.getElementById('btn-request-' + id);
+                if(btn) {
+                  btn.disabled = true;
+                  btn.textContent = 'Requested';
+                  btn.style.background = '#ccc';
+                  btn.style.color = '#666';
+                  btn.style.cursor = 'not-allowed';
+                  btn.onclick = null;
+                }
+              }
+            }
+      }
+
+      function applyFilters() {
+        const cat = categoryFilter.value;
+        const skill = skillFilter.value;
+        const demand = demandFilter.value;
+        const q = searchInput.value.trim().toLowerCase();
+        let res = projects.slice();
+        if (cat !== 'all') res = res.filter(p => p.cat === cat);
+        if (skill !== 'all') res = res.filter(p => p.skills.includes(skill));
+        if (demand !== 'all') res = res.filter(p => p.demand === demand);
+        if (q) res = res.filter(p => (p.title+ ' ' + p.company + ' ' + p.desc).toLowerCase().includes(q));
+        filteredProjects = res;
+        currentPage = 1;
+        render(filteredProjects);
+      }
+
+      categoryFilter.addEventListener('change', applyFilters);
+      skillFilter.addEventListener('change', applyFilters);
+      demandFilter.addEventListener('change', applyFilters);
+      searchInput.addEventListener('input', applyFilters);
+      clearBtn.addEventListener('click', function() { categoryFilter.value='all'; skillFilter.value='all'; demandFilter.value='all'; searchInput.value=''; applyFilters(); });
+
+      render(filteredProjects);
+
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { profileMenu.style.display='none'; menuOpen=false; } });
+    });
+  </script>
+</body>
+</html>
