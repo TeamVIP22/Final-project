@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cek Status Pendaftaran - Vinex</title>
+  <link rel="icon" href="uploads/logo-main.png">
+  <style>
+    :root {
+      --brand: #2B82C8;
+      --brand-dark: #0E4A78;
+      --brand-rgb: 43,130,200;
+      --brand-dark-rgb: 14,74,120;
+      --primary: var(--brand);
+      --accent: #4CC3E6;
+      --accent-rgb: 76,195,230;
+      --bg: #ffffff;
+      --bg-light: #f4fbff;
+      --text: #0F1724;
+      --text-light: #6b7280;
+      --border: rgba(var(--brand-dark-rgb),0.08);
+      --radius: 10px;
+      --shadow: 0 6px 20px rgba(var(--brand-dark-rgb),0.12);
+      --transition: 0.22s ease;
+      --logo-size: 40px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', system-ui;
+      color: var(--text);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .verification-container {
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 50px 40px 40px;
+      position: relative;
+      max-height: none;
+      overflow: visible;
+      margin: 0 auto;
+    }
+
+    .brand-inline {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: var(--logo-size);
+      height: var(--logo-size);
+      object-fit: contain;
+    }
+
+    #siteBrandTitle {
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 22px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .verification-header {
+      text-align: center;
+      margin-bottom: 28px;
+      margin-top: 20px;
+    }
+
+    .verification-header h1 {
+      font-size: 26px;
+      margin-bottom: 8px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .verification-header p {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .search-group {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-group input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg-light);
+      transition: var(--transition);
+    }
+
+    .search-group input:focus {
+      outline: none;
+      background: var(--bg);
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.08);
+    }
+
+    .search-group button {
+      padding: 12px 16px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .search-group button:hover {
+      background: var(--brand-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.2);
+    }
+
+    .search-group button:active {
+      transform: translateY(0);
+    }
+
+    .status-box {
+      background: #fffbec;
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid rgba(242,183,5,0.15);
+      display: none;
+    }
+
+    .status-box.show {
+      display: block;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 12px;
+      background: #fef3c7;
+      color: #92400e;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .status-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin-bottom: 12px;
+    }
+
+    .status-info {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .status-info div {
+      margin-bottom: 10px;
+    }
+
+    .status-info div:last-child {
+      margin-bottom: 0;
+    }
+
+    .status-info label {
+      color: var(--text-light);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-info strong {
+      display: block;
+      color: var(--text);
+      margin-top: 2px;
+    }
+
+    .status-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-whatsapp {
+      flex: 1;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      background: #25D366;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-whatsapp:hover {
+      background: #20BA58;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+    }
+
+    .btn-back-to-login {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 16px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-back-to-login:hover {
+      background: var(--brand-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.2);
+    }
+
+    .btn-login {
+      flex: 1;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      background: var(--brand);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-login:hover {
+      background: var(--brand-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.2);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .error-message {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    @media (max-width: 520px) {
+      :root {
+        --logo-size: 50px;
+      }
+
+      .verification-container {
+        padding: 40px 24px 30px;
+        max-width: 100%;
+      }
+
+      .verification-header {
+        margin-top: 15px;
+      }
+
+      .verification-header h1 {
+        font-size: 24px;
+      }
+
+      .search-group {
+        flex-direction: column;
+      }
+
+      .search-group input {
+        width: 100%;
+      }
+
+      .search-group button {
+        width: 100%;
+      }
+
+      .status-actions {
+        flex-direction: column;
+      }
+
+      .status-actions button,
+      .status-actions a {
+        width: 100%;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(var(--brand-rgb), 0.3);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(var(--brand-rgb), 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="verification-container">
+    <div class="brand-inline">
+      <img class="logo" src="uploads/logo-main.png" alt="logo">
+      <p id="siteBrandTitle">Vinex</p>
+    </div>
+
+    <a href="index.html" class="btn-back-to-login">← Login</a>
+
+    <div class="verification-header">
+      <h1>Check Status</h1>
+      <p>Please enter your email to see verification status</p>
+    </div>
+
+    <div class="error-message" id="errorMessage"></div>
+
+    <div class="search-group">
+      <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="off">
+      <button id="checkBtn">Check</button>
+    </div>
+
+    <div class="status-box" id="statusBox">
+      <div class="status-badge" id="statusBadge">Menunggu Verifikasi</div>
+      <div class="status-title">Informasi Pendaftaran</div>
+
+      <div class="status-info">
+        <div>
+          <label>Email</label>
+          <strong id="statusEmail">-</strong>
+        </div>
+        <div>
+          <label>Nama</label>
+          <strong id="statusName">-</strong>
+        </div>
+        <div>
+          <label>Universitas</label>
+          <strong id="statusUniversity">-</strong>
+        </div>
+        <div>
+          <label>Total Pembayaran</label>
+          <strong id="statusTotal">-</strong>
+        </div>
+        <div>
+          <label>Status Verifikasi</label>
+          <strong id="statusVerification">-</strong>
+        </div>
+        <div>
+          <label>Tanggal Pendaftaran</label>
+          <strong id="statusDate">-</strong>
+        </div>
+      </div>
+
+      <div class="status-actions">
+        <a id="whatsappLink" class="btn-whatsapp" target="_blank">Contact Admin</a>
+      </div>
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      Masukkan alamat email Anda untuk melihat status pendaftaran.
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const checkBtn = document.getElementById('checkBtn');
+      const emailInput = document.getElementById('emailInput');
+      const statusBox = document.getElementById('statusBox');
+      const errorMessage = document.getElementById('errorMessage');
+      const emptyState = document.getElementById('emptyState');
+      const whatsappLink = document.getElementById('whatsappLink');
+
+      function formatRupiah(x) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(x);
+      }
+
+      function findRegistration(email) {
+        try {
+          const raw = localStorage.getItem('registrations') || '[]';
+          const arr = JSON.parse(raw);
+          return arr.find(r => r.email.toLowerCase() === email.toLowerCase());
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function showError(msg) {
+        errorMessage.textContent = msg;
+        errorMessage.classList.add('show');
+        setTimeout(() => errorMessage.classList.remove('show'), 4000);
+      }
+
+      function displayStatus(reg) {
+        document.getElementById('statusEmail').textContent = reg.email;
+        document.getElementById('statusName').textContent = reg.name;
+        document.getElementById('statusUniversity').textContent = reg.university;
+        document.getElementById('statusTotal').textContent = formatRupiah(reg.price);
+        
+        // Display verification status
+        const verificationStatus = reg.emailVerified ? '✓ Email Sudah Diverifikasi' : 'Menunggu Verifikasi Email';
+        document.getElementById('statusVerification').textContent = verificationStatus;
+        
+        document.getElementById('statusDate').textContent = new Date(reg.createdAt).toLocaleString('id-ID');
+        document.getElementById('statusBadge').textContent = reg.status || 'Menunggu Verifikasi Email';
+
+        whatsappLink.href = 'https://chat.whatsapp.com/FTtZAxlQ8p05miUdCDBHwb' + encodeURIComponent(
+          'Halo Admin, saya ingin bertanya mengenai status verifikasi email saya untuk: ' + reg.email
+        );
+
+        emptyState.style.display = 'none';
+        statusBox.classList.add('show');
+        errorMessage.classList.remove('show');
+      }
+
+      function checkEmail() {
+        const email = emailInput.value.trim();
+        if (!email) {
+          showError('Masukkan alamat email Anda.');
+          return;
+        }
+
+        // Simple email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showError('Format email tidak valid. Silakan periksa kembali.');
+          return;
+        }
+
+        const reg = findRegistration(email);
+        if (!reg) {
+          showError('Email tidak ditemukan dalam sistem kami. Pastikan email sudah terdaftar.');
+          return;
+        }
+
+        displayStatus(reg);
+      }
+
+      checkBtn.addEventListener('click', function() {
+        checkEmail();
+      });
+
+      // Allow Enter key to search
+      emailInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') checkEmail();
+      });
+
+      // Check if there's an email in URL when page loads
+      const urlParams = new URLSearchParams(window.location.search);
+      const emailFromUrl = urlParams.get('email');
+      if (emailFromUrl) {
+        emailInput.value = emailFromUrl;
+        setTimeout(checkEmail, 100);
+      }
+    });
+  </script>
+</body>
+</html>
