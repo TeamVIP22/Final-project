@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login — Minimal Template</title>
-  <link rel="icon" href="uploads/Logo-brand.png">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Vinex</title>
+  <link rel="icon" href="uploads/logo-main.png">
   <meta name="description" content="Login to your account">
   <style>
     :root {
-      --brand: #44F563;
-      --brand-dark: #2EC94C;
+      --brand: #2B82C8;
+      --brand-dark: #0E4A78;
+      --brand-rgb: 43,130,200;
+      --brand-dark-rgb: 14,74,120;
+      --primary: var(--brand);
+      --accent-rgb: 76,195,230;
       --bg: #ffffff;
-      --bg-light: #f8f9fa;
-      --text: #111827;
+      --bg-light: #f4fbff;
+      --text: #0F1724;
       --text-light: #6b7280;
-      --border: #e5e7eb;
+      --border: rgba(var(--brand-dark-rgb),0.08);
       --radius: 10px;
-      --shadow: 0 6px 20px rgba(0,0,0,0.08);
+      --shadow: 0 6px 20px rgba(var(--brand-dark-rgb),0.12);
       --transition: 0.22s ease;
+      --logo-size: 40px;
     }
 
     * {
@@ -34,37 +38,11 @@
     body {
       font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
       color: var(--text);
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
       padding: 20px;
-    }
-
-    .logo-top {
-      position: absolute;
-      top: 30px;
-      left: 30px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 10;
-    }
-
-    .logo-top img {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .logo-top strong {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--brand);
-      letter-spacing: 0.5px;
     }
 
     .login-container {
@@ -77,15 +55,40 @@
       position: relative;
     }
 
+    .brand-inline {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .login-logo {
+      position: static;
+      width: var(--logo-size);
+      height: var(--logo-size);
+      object-fit: contain;
+    }
+
+    #siteBrandTitle {
+      position: static;
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 22px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
     .login-header {
       text-align: center;
       margin-bottom: 35px;
+      margin-top: 20px;
     }
 
     .login-header h1 {
       font-size: 28px;
       margin-bottom: 8px;
-      color: var(--text);
+      color: var(--primary);
       font-weight: 700;
     }
 
@@ -102,7 +105,7 @@
       display: block;
       font-size: 13px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--primary);
       margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -123,7 +126,7 @@
       outline: none;
       background: var(--bg);
       border-color: var(--brand);
-      box-shadow: 0 0 0 3px rgba(68, 245, 99, 0.1);
+      box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.08);
     }
 
     .password-wrapper {
@@ -176,7 +179,7 @@
     .btn-login:hover {
       background: var(--brand-dark);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(68, 245, 99, 0.3);
+      box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.2);
     }
 
     .btn-login:active {
@@ -236,24 +239,48 @@
       text-decoration: underline;
     }
 
+    .header-top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .btn-verification {
+      padding: 10px 16px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-verification:hover {
+      background: var(--brand-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.2);
+    }
+
     @media (max-width: 520px) {
-      .logo-top {
-        top: 20px;
-        left: 20px;
-      }
-
-      .logo-top img {
-        width: 40px;
-        height: 40px;
-      }
-
-      .logo-top strong {
-        font-size: 16px;
+      :root {
+        --logo-size: 50px;
       }
 
       .login-container {
         padding: 40px 24px 30px;
         max-width: 100%;
+      }
+
+      .login-header {
+        margin-top: 15px;
       }
 
       .login-header h1 {
@@ -263,12 +290,16 @@
   </style>
 </head>
 <body>
-  <div class="logo-top">
-    <img src="uploads/Logo-brand.png" alt="logo">
-    <strong>Your Brand</strong>
-  </div>
-
   <div class="login-container">
+    <div class="brand-inline">
+      <img class="login-logo" src="uploads/logo-main.png" alt="logo">
+      <p id="siteBrandTitle">Vinex</p>
+    </div>
+
+    <div class="header-top-right">
+      <a href="verification.html" class="btn-verification">✓ Verify</a>
+    </div>
+
     <div class="login-header">
       <h1>Sign In</h1>
       <p>Welcome back! Please login to your account</p>
@@ -295,7 +326,7 @@
             type="password" 
             id="password" 
             name="password" 
-            placeholder="••••••••"
+            placeholder="password"
             required
           >
           <button 
@@ -304,7 +335,7 @@
             id="passwordToggle"
             aria-label="Toggle password visibility"
           >
-            👁️
+            👁️‍🗨️
           </button>
         </div>
       </div>
@@ -315,8 +346,7 @@
     </form>
 
     <div class="login-footer">
-      <span>Don't have an account? <a href="about.html">Contact us</a></span>
-      <a href="contact.html">← Back to home</a>
+      <span>Don't have an account? <a href="register.html">Daftar Sekarang</a></span>
     </div>
   </div>
 
@@ -328,22 +358,19 @@
       const passwordToggle = document.getElementById('passwordToggle');
       const formMessage = document.getElementById('formMessage');
 
-      // Password visibility toggle
       passwordToggle.addEventListener('click', function(e) {
         e.preventDefault();
         const isPassword = passwordInput.type === 'password';
         passwordInput.type = isPassword ? 'text' : 'password';
-        passwordToggle.textContent = isPassword ? '👁️‍🗨️' : '👁️';
+        passwordToggle.textContent = isPassword ? '👁️‍🗨️' : '👁️‍🗨️';
       });
 
-      // Form submission
       loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
-        // Simple validation
         if (!email || !password) {
           showMessage('Please fill in all fields', 'error');
           return;
@@ -359,30 +386,54 @@
           return;
         }
 
-        // Simulate login process
         const submitBtn = loginForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         submitBtn.disabled = true;
         submitBtn.textContent = 'Signing in...';
 
         setTimeout(function() {
-          // Save login info to localStorage (simulated backend)
           const loginData = {
             email: email,
-            password: password, // In production, NEVER store passwords!
+            password: password,
             loginTime: new Date().toISOString(),
             isLoggedIn: true
           };
 
+          // Cek apakah email ini terdaftar di userRegistry
+          const userRegistry = JSON.parse(localStorage.getItem('userRegistry') || '{}');
+          const profileData = {};
+
+          if (userRegistry[email] && userRegistry[email].isRegistered) {
+            // Jika email terdaftar, gunakan data dari registrasi
+            profileData.fullName = userRegistry[email].fullName;
+            profileData.email = userRegistry[email].email;
+            profileData.university = userRegistry[email].university;
+            profileData.major = userRegistry[email].major;
+            profileData.phone = userRegistry[email].phone;
+            profileData.skills = userRegistry[email].skills || [];
+            profileData.bio = userRegistry[email].bio || '';
+            profileData.isRegistered = true;
+          } else {
+            // Jika belum register, gunakan data dummy
+            profileData.fullName = 'Pengguna';
+            profileData.email = email;
+            profileData.university = '';
+            profileData.major = '';
+            profileData.phone = '';
+            profileData.skills = [];
+            profileData.bio = '';
+            profileData.isRegistered = false;
+          }
+
           localStorage.setItem('userLogin', JSON.stringify(loginData));
+          localStorage.setItem('profileData', JSON.stringify(profileData));
 
           showMessage('Login successful! Redirecting...', 'success');
 
           setTimeout(function() {
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
-            // Redirect to dashboard
-            window.location.href = 'dashboard.html';
+            window.location.href = 'projects.html';
           }, 1500);
         }, 1200);
       });
@@ -403,7 +454,6 @@
         }
       }
 
-      // Check if already logged in
       const userLogin = localStorage.getItem('userLogin');
       if (userLogin) {
         const data = JSON.parse(userLogin);
@@ -411,11 +461,30 @@
         formMessage.textContent = 'You are already logged in. Redirecting...';
         formMessage.className = 'form-message success';
         setTimeout(function() {
-          window.location.href = 'dashboard.html';
+          window.location.href = 'projects.html';
         }, 1500);
       }
     });
   </script>
+  <script>
+    window.setBrandTitle = function(text) {
+      if (!text) return;
+      let el = document.getElementById('siteBrandTitle');
+      if (!el) {
+        el = document.createElement('span');
+        el.id = 'siteBrandTitle';
+        const container = document.querySelector('.login-container');
+        if (container) container.appendChild(el);
+      }
+      el.textContent = text;
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        const saved = localStorage.getItem('siteBrandTitle');
+        if (saved) setBrandTitle(saved);
+      } catch (e) {}
+    });
+  </script>
 </body>
 </html>
-
