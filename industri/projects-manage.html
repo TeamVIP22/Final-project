@@ -436,8 +436,8 @@
       flex: 1;
       padding: 12px 18px;
       background: transparent;
-      color: #ef4444;
-      border: 1px solid #ef4444;
+      color: var(--brand);
+      border: 1px solid var(--brand);
       border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
@@ -446,13 +446,15 @@
     }
 
     .btn-reject:hover {
-      background: #fee2e2;
+      background: var(--bg-light);
+      border-color: var(--brand-dark);
+      color: var(--brand-dark);
     }
 
     .btn-approve {
       flex: 1;
       padding: 12px 18px;
-      background: #10b981;
+      background: var(--brand);
       color: #fff;
       border: none;
       border-radius: 8px;
@@ -463,9 +465,9 @@
     }
 
     .btn-approve:hover {
-      background: #059669;
+      background: var(--brand-dark);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.2);
     }
 
     .empty-state {
@@ -954,6 +956,30 @@
       document.getElementById('notificationModal').classList.remove('show');
     }
 
+    // Payment amount formatter - moved to global scope for reuse
+    function formatPaymentShort(amount) {
+      if (amount === 0) return 'Rp 0';
+      
+      const suffixes = [
+        { value: 1000000000000, suffix: 't' },  // triliun
+        { value: 1000000000, suffix: 'm' },     // milyar
+        { value: 1000000, suffix: 'jt' },       // juta
+        { value: 1000, suffix: 'rb' }           // ribu
+      ];
+      
+      for (let i = 0; i < suffixes.length; i++) {
+        if (amount >= suffixes[i].value) {
+          const divided = amount / suffixes[i].value;
+          // Format dengan 1 desimal jika ada nilai desimal, tanpa desimal jika bulat
+          const formatted = divided % 1 === 0 ? Math.floor(divided) : divided.toFixed(1);
+          return `Rp ${formatted}${suffixes[i].suffix}`;
+        }
+      }
+      
+      // Jika kurang dari 1000
+      return `Rp${amount}`;
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       const profileBtn = document.getElementById('profileBtn');
       const profileMenu = document.getElementById('profileMenu');
@@ -1047,7 +1073,7 @@
       // Payment amount formatter
       document.getElementById('paymentAmount').addEventListener('input', function() {
         const amount = parseInt(this.value) || 0;
-        document.getElementById('paymentDisplay').textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
+        document.getElementById('paymentDisplay').textContent = formatPaymentShort(amount);
       });
 
       // Payment proof file upload
@@ -1596,7 +1622,9 @@
       const projectIndex = projects.findIndex(p => p.id === currentReviewProjectId);
 
       if (projectIndex !== -1) {
+        const paymentAmountFormatted = formatPaymentShort(parseInt(paymentAmount));
         projects[projectIndex].status = 'Completed';
+        projects[projectIndex].wage = paymentAmountFormatted;
         projects[projectIndex].review = {
           rating: rating,
           comments: comments,
@@ -1638,6 +1666,3 @@
   </script>
 </body>
 </html>
-
-
-
