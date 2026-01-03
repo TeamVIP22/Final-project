@@ -162,6 +162,36 @@
       gap: 18px;
     }
 
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg-light);
+    }
+
+    .upload-area:hover {
+      border-color: var(--brand);
+      background: rgba(var(--brand-rgb), 0.02);
+    }
+
+    .upload-area input[type="file"] {
+      display: none;
+    }
+
+    .upload-text {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .upload-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
     .skills-input {
       display: flex;
       gap: 8px;
@@ -440,6 +470,31 @@
             <input type="hidden" id="skills" name="skills" value="[]">
           </div>
 
+          <!-- Project Image -->
+          <div class="form-section">
+            <h3 class="section-title">🖼️ Project Image</h3>
+
+            <div class="form-group">
+              <label>Current Project Image</label>
+              <div style="margin-bottom: 16px;">
+                <img id="currentImage" src="" alt="Current Project Image" style="max-width: 300px; max-height: 300px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover;">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Change Project Image</label>
+              <div class="upload-area" id="uploadArea">
+                <input type="file" id="projectImage" accept="image/*">
+                <div class="upload-icon">🖼️</div>
+                <div class="upload-text">
+                  Click to upload or drag and drop<br>
+                  <span style="font-size: 12px;">PNG, JPG (Max 5MB)</span>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" id="projectImageData" name="projectImageData" value="">
+          </div>
+
           <div class="form-actions">
             <a href="projects-manage.html" class="btn btn-secondary">Cancel</a>
             <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -570,6 +625,85 @@
           skills = [...project.skills];
           renderSkills();
         }
+
+        // Display current image
+        if (project.image) {
+          document.getElementById('currentImage').src = project.image;
+        }
+      }
+
+      // Image upload handling
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('projectImage');
+      const projectImageData = document.getElementById('projectImageData');
+      const currentImage = document.getElementById('currentImage');
+
+      // Click to upload
+      uploadArea.addEventListener('click', function() {
+        fileInput.click();
+      });
+
+      // Drag and drop
+      uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadArea.style.borderColor = 'var(--brand)';
+        uploadArea.style.background = 'rgba(var(--brand-rgb), 0.05)';
+      });
+
+      uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadArea.style.borderColor = '';
+        uploadArea.style.background = '';
+      });
+
+      uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadArea.style.borderColor = '';
+        uploadArea.style.background = '';
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          fileInput.files = files;
+          handleImageUpload(files[0]);
+        }
+      });
+
+      // File input change
+      fileInput.addEventListener('change', function(e) {
+        if (this.files.length > 0) {
+          handleImageUpload(this.files[0]);
+        }
+      });
+
+      // Handle image upload function
+      function handleImageUpload(file) {
+        // Check file size (Max 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > maxSize) {
+          alert('File size must be less than 5MB');
+          return;
+        }
+
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+          alert('Please upload a valid image file');
+          return;
+        }
+
+        // Read file as base64
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageData = e.target.result;
+          projectImageData.value = imageData;
+          
+          // Update current image preview
+          currentImage.src = imageData;
+          currentImage.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
       }
 
       document.getElementById('editForm').addEventListener('submit', function(e) {
@@ -582,6 +716,12 @@
           project.demand = document.getElementById('demand').value.trim();
           project.wage = document.getElementById('wage').value.trim();
           project.skills = skills;
+          
+          // Update image if new one was uploaded
+          const newImageData = document.getElementById('projectImageData').value;
+          if (newImageData) {
+            project.image = newImageData;
+          }
 
           localStorage.setItem('industryProjects', JSON.stringify(projects));
           window.location.href = './projects-manage.html';
