@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vinex - Industry</title>
+  <link rel="icon" href="../uploads/logo-main.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #2B82C8;
+      --brand-dark: #0E4A78;
+      --brand-rgb: 43,130,200;
+      --brand-dark-rgb: 14,74,120;
+      --primary: var(--brand);
+      --accent: #4CC3E6;
+      --accent-rgb: 76,195,230;
+      --bg: #ffffff;
+      --bg-light: #f4fbff;
+      --text: #0F1724;
+      --muted: #6b7280;
+      --border: rgba(var(--brand-dark-rgb),0.08);
+      --radius: 10px;
+      --shadow: 0 8px 30px rgba(var(--brand-dark-rgb),0.12);
+      --transition: 0.22s ease;
+      --logo-size: 50px;
+      --header-h: 72px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: var(--text);
+      background: #f5f8ff;
+      min-height: 100vh;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 18px rgba(var(--brand-dark-rgb), 0.04);
+      z-index: 1000;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand .logo { width: var(--logo-size); height: var(--logo-size); object-fit: contain; border-radius: 8px; }
+    .brand-title {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: 30px;
+      letter-spacing: 1px;
+      color: var(--primary);
+    }
+
+    .site-nav { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 18px; align-items:center; }
+    .site-nav a { color: var(--primary); text-decoration: none; font-weight:600; padding: 8px 10px; border-radius:8px; }
+    .site-nav a.active { background: var(--bg-light); }
+    .site-nav a:hover { background: var(--bg-light); }
+
+    .profile-meta { text-align: right; display: none; }
+    .profile-name { font-weight: 700; color: var(--primary); font-size: 14px; }
+    .profile-role { font-size: 12px; color: var(--muted); }
+
+    .profile-menu {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow);
+      min-width: 160px; overflow: hidden; display: none;
+    }
+    .profile-menu a, .profile-menu button { display: block; padding: 10px 12px; text-decoration: none; color: var(--text); background: transparent; border: none; width: 100%; text-align: left; cursor: pointer; }
+    .profile-menu a:hover, .profile-menu button:hover { background: var(--bg-light); }
+
+    .profile-wrap { position: relative; display: flex; align-items: center; gap: 12px; }
+    .profile-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; border: none; cursor: pointer; padding: 6px 8px; border-radius: 8px;
+    }
+    .profile-avatar { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; }
+
+    main { padding-top: calc(var(--header-h) + 24px); }
+    .container { padding: 24px; width: 100%; max-width: 900px; margin: 0 auto; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--brand);
+      text-decoration: none;
+      margin-bottom: 24px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .back-link:hover {
+      gap: 12px;
+    }
+
+    .student-header {
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      padding: 40px 0;
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .student-avatar-large {
+      width: 140px;
+      height: 140px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      box-shadow: var(--shadow);
+      border: 2px solid var(--border);
+    }
+
+    .student-header h1 {
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 28px;
+    }
+
+    .student-header .role {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .info-section {
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      padding: 24px 0;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      color: var(--text);
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .skill-tag {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .portfolio-card {
+      background: linear-gradient(135deg, rgba(var(--brand-rgb), 0.08), rgba(var(--accent-rgb), 0.08));
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .portfolio-image {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      background: var(--bg-light);
+    }
+
+    .portfolio-info {
+      padding: 12px;
+    }
+
+    .portfolio-title {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .portfolio-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 15px;
+      padding-top: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.2);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    @media (max-width: 900px) {
+      .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .info-value {
+        text-align: left;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        padding: 16px;
+      }
+
+      .student-header {
+        padding: 20px;
+      }
+
+      .student-avatar-large {
+        width: 100px;
+        height: 100px;
+      }
+
+      .student-header h1 {
+        font-size: 20px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+
+    .site-footer {
+      margin-top: 28px;
+      padding: 28px 0;
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      max-width: none;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 0 6%;
+    }
+
+    .footer-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .footer-bottom {
+      padding: 0 6%;
+      margin-top: 34px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-brand p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="projects-manage.html" class="brand">
+      <img src="../uploads/logo-main.png" alt="Vinex" class="logo">
+      <h2 class="brand-title">Vinex</h2>
+    </a>
+
+    <nav class="site-nav">
+      <a href="projects-manage.html">Dashboard</a>
+      <a href="requests.html">Requests</a>
+    </nav>
+
+    <div class="profile-wrap">
+      <div class="profile-meta" id="headerProfileMeta" style="display:none; text-align:right;">
+        <div class="profile-name" id="headerProfileName"></div>
+        <div class="profile-role" id="headerCompanyName"></div>
+      </div>
+      <button class="profile-btn" id="profileBtn">
+        <img src="../uploads/avatar-default.png" alt="Profile" class="profile-avatar">
+      </button>
+
+      <div class="profile-menu" id="profileMenu">
+        <a href="profile.html">View Profile</a>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container" style="max-width: 900px; margin: 0 auto;">
+      <div style="background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); padding: 40px;">
+
+        <!-- Student Header -->
+        <div class="student-header">
+          <img src="../uploads/pfp.jpg" alt="Student" class="student-avatar-large">
+          <h1 id="studentName">Ahmad Wijaya</h1>
+          <p class="role" id="studentRole">UI - Computer Science</p>
+        </div>
+
+        <!-- Personal Information -->
+        <div class="info-section">
+          <h3 class="section-title">Personal Information</h3>
+          
+          <div class="info-row">
+            <span class="info-label">Full Name</span>
+            <span class="info-value" id="infoName">Ahmad Wijaya</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value" id="infoEmail">ahmad@example.com</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">University</span>
+            <span class="info-value" id="infoUniversity">Universitas Indonesia</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Major</span>
+            <span class="info-value" id="infoMajor">Computer Science</span>
+          </div>
+        </div>
+
+        <!-- Skills & Bio -->
+        <div class="info-section">
+          <h3 class="section-title">Skills & Bio</h3>
+          
+          <p id="infoBio" style="color: var(--muted); margin-bottom: 16px; line-height: 1.6;">
+            Passionate developer with experience in various technologies. Eager to learn and contribute to real-world projects.
+          </p>
+
+          <div>
+            <div class="info-label" style="margin-bottom: 8px;">Skills</div>
+            <div class="skills-list" id="skillsList">
+              <span class="skill-tag">React Native</span>
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">Node.js</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portfolio -->
+        <div class="info-section">
+          <h3 class="section-title">Portfolio</h3>
+          
+          <div class="portfolio-grid" id="portfolioGrid">
+            <div class="portfolio-card">
+              <div style="width: 100%; height: 120px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; color: var(--muted);">No portfolio items yet</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Button -->
+        <div class="action-buttons">
+          <a href="requests.html" class="btn btn-secondary">Back to Requests</a>
+          <button class="btn btn-primary" onclick="contactStudent()">Contact via WhatsApp</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const profileBtn = document.getElementById('profileBtn');
+      const profileMenu = document.getElementById('profileMenu');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const headerProfileMeta = document.getElementById('headerProfileMeta');
+      const headerProfileName = document.getElementById('headerProfileName');
+      const headerCompanyName = document.getElementById('headerCompanyName');
+
+      // Check if user is logged in
+      const industryLogin = localStorage.getItem('industryLogin');
+      if (!industryLogin) {
+        window.location.href = './index.html';
+        return;
+      }
+
+      const loginData = JSON.parse(industryLogin);
+      headerProfileName.textContent = loginData.email || 'Company';
+      headerCompanyName.textContent = loginData.name || 'Industry';
+      headerProfileMeta.style.display = 'block';
+
+      // Profile menu toggle
+      profileBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.profile-wrap')) {
+          profileMenu.style.display = 'none';
+        }
+      }, true);
+
+      // Logout
+      logoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('industryLogin');
+        localStorage.removeItem('industryProfile');
+        window.location.href = './index.html';
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const studentId = parseInt(params.get('id'));
+
+      // Load student data
+      const requests = JSON.parse(localStorage.getItem('studentRequests') || '[]');
+      const student = requests.find(r => r.id === studentId);
+
+      if (!student) {
+        // Fallback to dummy data
+        loadDummyStudent();
+        return;
+      }
+
+      document.getElementById('studentName').textContent = student.studentName;
+      document.getElementById('studentRole').textContent = `${student.university} - ${student.major}`;
+      document.getElementById('infoName').textContent = student.studentName;
+      document.getElementById('infoEmail').textContent = student.studentEmail;
+      document.getElementById('infoUniversity').textContent = student.university;
+      document.getElementById('infoMajor').textContent = student.major;
+      document.getElementById('infoBio').textContent = student.bio;
+
+      // Skills
+      const skillsList = document.getElementById('skillsList');
+      skillsList.innerHTML = student.skills.map(skill => 
+        `<span class="skill-tag">${skill}</span>`
+      ).join('');
+
+      // Portfolio (dummy)
+      loadPortfolio();
+    });
+
+    function loadDummyStudent() {
+      document.getElementById('studentName').textContent = 'Student';
+      document.getElementById('studentRole').textContent = 'University - Major';
+    }
+
+    function loadPortfolio() {
+      const portfolioGrid = document.getElementById('portfolioGrid');
+      portfolioGrid.innerHTML = `
+        <div class="portfolio-card">
+          <img src="../uploads/coding.jpg" alt="Portfolio" class="portfolio-image">
+          <div class="portfolio-info">
+            <div class="portfolio-title">E-Commerce Platform</div>
+            <div class="portfolio-desc">React + Node.js</div>
+          </div>
+        </div>
+        <div class="portfolio-card">
+          <img src="../uploads/coding.jpg" alt="Portfolio" class="portfolio-image">
+          <div class="portfolio-info">
+            <div class="portfolio-title">Mobile App</div>
+            <div class="portfolio-desc">React Native</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function contactStudent() {
+      const phoneNumber = '6281234567890'; // Default phone
+      const message = 'Halo, saya tertarik dengan profil Anda. Apakah Anda tersedia untuk project kami?';
+      const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappLink, '_blank');
+    }
+  </script>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../uploads/logo-main.png" alt="logo" class="footer-logo">
+        <div>
+          <p class="muted">Micro projects & skill-proof hub for students and industry partners.</p>
+        </div> 
+      </div>
+
+      <div class="footer-links">
+        <a href="projects-manage.html">Dashboard</a>
+        <a href="requests.html">Requests</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>Copyright © <span id="yearSpan">2025</span> Vinix Seven Indonesia</small>
+      <script>
+        document.getElementById('yearSpan').textContent = new Date().getFullYear();
+      </script>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vinex - Industry</title>
+  <link rel="icon" href="../uploads/logo-main.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #2B82C8;
+      --brand-dark: #0E4A78;
+      --brand-rgb: 43,130,200;
+      --brand-dark-rgb: 14,74,120;
+      --primary: var(--brand);
+      --accent: #4CC3E6;
+      --accent-rgb: 76,195,230;
+      --bg: #ffffff;
+      --bg-light: #f4fbff;
+      --text: #0F1724;
+      --muted: #6b7280;
+      --border: rgba(var(--brand-dark-rgb),0.08);
+      --radius: 10px;
+      --shadow: 0 8px 30px rgba(var(--brand-dark-rgb),0.12);
+      --transition: 0.22s ease;
+      --logo-size: 50px;
+      --header-h: 72px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: var(--text);
+      background: #f5f8ff;
+      min-height: 100vh;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 18px rgba(var(--brand-dark-rgb), 0.04);
+      z-index: 1000;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand .logo { width: var(--logo-size); height: var(--logo-size); object-fit: contain; border-radius: 8px; }
+    .brand-title {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: 30px;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-left: 4px;
+    }
+
+    .site-nav { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 18px; align-items:center; }
+    .site-nav a { color: var(--primary); text-decoration: none; font-weight:600; padding: 8px 10px; border-radius:8px; }
+    .site-nav a:hover { background: var(--bg-light); }
+
+    .profile-wrap { position: relative; display: flex; align-items: center; gap: 12px; }
+    .profile-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; border: none; cursor: pointer; padding: 6px 8px; border-radius: 8px;
+    }
+    .profile-avatar { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; box-shadow: var(--shadow); }
+    .profile-meta { text-align: right; display: none; }
+    .profile-name { font-weight: 700; color: var(--primary); font-size: 14px; }
+    .profile-role { font-size: 12px; color: var(--muted); }
+
+    .profile-menu {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow);
+      min-width: 160px; overflow: hidden; display: none;
+    }
+    .profile-menu a, .profile-menu button { display: block; padding: 10px 12px; text-decoration: none; color: var(--text); background: transparent; border: none; width: 100%; text-align: left; cursor: pointer; }
+    .profile-menu a:hover, .profile-menu button:hover { background: var(--bg-light); }
+
+    main { padding-top: calc(var(--header-h) + 24px); }
+    .container { padding: 24px; width: 100%; max-width: 900px; margin: 0 auto; }
+
+    h1 { font-size: 28px; color: var(--primary); margin-bottom: 24px; }
+
+    .form-container {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 32px;
+    }
+
+    .form-section {
+      margin-bottom: 28px;
+    }
+
+    .form-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      transition: var(--transition);
+      background: var(--bg-light);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      background: var(--bg);
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.08);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .skills-input {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .skills-input input {
+      flex: 1;
+    }
+
+    .skills-input button {
+      padding: 12px 14px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .skills-input button:hover {
+      background: var(--brand-dark);
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .skill-badge {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .skill-tag {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .skill-tag button {
+      background: none;
+      border: none;
+      color: var(--brand);
+      cursor: pointer;
+      padding: 0;
+      font-size: 16px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      flex: 1;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    .site-footer {
+      margin-top: 28px;
+      padding: 28px 0;
+      background: transparent;
+      color: var(--muted);
+    }
+    
+    .footer-inner {
+      max-width: none;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 0 6%;
+    }
+    
+    .footer-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+    
+    .footer-bottom {
+      padding: 0 6%;
+      margin-top: 34px;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .footer-brand p {
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .site-nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        padding: 16px;
+      }
+
+      .form-container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="projects-manage.html" class="brand">
+      <img src="../uploads/logo-main.png" alt="Vinex" class="logo">
+      <h2 class="brand-title">Vinex</h2>
+    </a>
+
+    <nav class="site-nav">
+      <a href="projects-manage.html">Dashboard</a>
+      <a href="projects-manage.html">My Projects</a>
+      <a href="requests.html">Requests</a>
+    </nav>
+
+    <div class="profile-wrap">
+      <div class="profile-meta" id="headerProfileMeta" style="display:none; text-align:right;">
+        <div class="profile-name" id="headerProfileName"></div>
+        <div class="profile-role" id="headerCompanyName"></div>
+      </div>
+      <button class="profile-btn" id="profileBtn">
+        <img src="../uploads/avatar-default.png" alt="Profile" class="profile-avatar">
+      </button>
+
+      <div class="profile-menu" id="profileMenu">
+        <a href="profile.html">View Profile</a>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>✎ Edit Project</h1>
+      
+      <div class="form-container">
+        <form id="editForm">
+          <!-- Project Information -->
+          <div class="form-section">
+            <h3 class="section-title">📋 Project Information</h3>
+
+            <div class="form-group">
+              <label for="title">Project Title *</label>
+              <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description *</label>
+              <textarea id="description" name="description" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="category">Category *</label>
+                <select id="category" name="category" required>
+                  <option value="">Select Category</option>
+                  <option value="Web Dev & UI/UX">Web Dev & UI/UX</option>
+                  <option value="Brand Design">Brand Design</option>
+                  <option value="Sosmed Specialist">Sosmed Specialist</option>
+                  <option value="Data Science">Data Science</option>
+                  <option value="Mobile Development">Mobile Development</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="demand">Demand Level *</label>
+                <select id="demand" name="demand" required>
+                  <option value="">Select Demand Level</option>
+                  <option value="Tinggi">Tinggi (High)</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Rendah">Rendah (Low)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="wage">Wage/Payment *</label>
+              <input type="text" id="wage" name="wage" required>
+            </div>
+          </div>
+
+          <!-- Skills -->
+          <div class="form-section">
+            <h3 class="section-title">🛠️ Required Skills</h3>
+
+            <div class="form-group">
+              <label for="skillsInput">Add Skills (comma-separated)</label>
+              <input type="text" id="skillsInput" name="skillsInput" placeholder="e.g. JavaScript, UI Design, Data Analysis">
+            </div>
+            <div class="form-group">
+              <label>Your Skills</label>
+              <div class="skills-list" id="skillsList">
+              </div>
+            </div>
+            <div style="margin-bottom: 20px;">
+              <button type="button" id="addSkillBtn" class="btn btn-primary">Add Skills</button>
+            </div>
+            <input type="hidden" id="skills" name="skills" value="[]">
+          </div>
+
+          <div class="form-actions">
+            <a href="projects-manage.html" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../uploads/logo-main.png" alt="logo" class="footer-logo">
+        <div>
+          <p class="muted">Micro projects & skill-proof hub for students and industry partners.</p>
+        </div> 
+      </div>
+
+      <div class="footer-links">
+        <a href="projects-manage.html">Dashboard</a>
+        <a href="requests.html">Requests</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>Copyright © <span id="yearSpan">2025</span> Vinix Seven Indonesia</small>
+      <script>
+        document.getElementById('yearSpan').textContent = new Date().getFullYear();
+      </script>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const profileBtn = document.getElementById('profileBtn');
+      const profileMenu = document.getElementById('profileMenu');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const headerProfileMeta = document.getElementById('headerProfileMeta');
+      const headerProfileName = document.getElementById('headerProfileName');
+      const headerCompanyName = document.getElementById('headerCompanyName');
+      const params = new URLSearchParams(window.location.search);
+      const projectId = parseInt(params.get('id'));
+      
+      const addSkillBtn = document.getElementById('addSkillBtn');
+      const skillsInput = document.getElementById('skillsInput');
+      const skillsList = document.getElementById('skillsList');
+      const skillsHidden = document.getElementById('skills');
+      let skills = [];
+
+      // Check if user is logged in
+      const industryLogin = localStorage.getItem('industryLogin');
+      if (!industryLogin) {
+        window.location.href = './index.html';
+        return;
+      }
+
+      const loginData = JSON.parse(industryLogin);
+      headerProfileName.textContent = loginData.email || 'Company';
+      headerCompanyName.textContent = loginData.name || 'Industry';
+      headerProfileMeta.style.display = 'block';
+
+      // Profile menu toggle
+      profileBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.profile-wrap')) {
+          profileMenu.style.display = 'none';
+        }
+      }, true);
+
+      // Logout
+      logoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('industryLogin');
+        localStorage.removeItem('industryProfile');
+        window.location.href = './index.html';
+      });
+
+      // Render skills
+      function renderSkills() {
+        const skillsList = document.getElementById('skillsList');
+        skillsList.innerHTML = skills.map((s, idx) => `
+          <div class="skill-badge">
+            ${s}
+            <button type="button" style="background:none; border:none; margin-left:4px; cursor:pointer; color:var(--primary);" onclick="removeSkill(${idx})">×</button>
+          </div>
+        `).join('');
+        skillsHidden.value = JSON.stringify(skills);
+      }
+
+      window.removeSkill = function(idx) {
+        skills.splice(idx, 1);
+        renderSkills();
+      };
+
+      // Add skills
+      addSkillBtn.addEventListener('click', () => {
+        const input = skillsInput.value.trim();
+        if (input) {
+          const newSkills = input.split(',').map(s => s.trim()).filter(s => s && !skills.includes(s));
+          skills.push(...newSkills);
+          skillsInput.value = '';
+          renderSkills();
+        }
+      });
+
+      skillsInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addSkillBtn.click();
+        }
+      });
+
+      // Load project data
+      const projects = JSON.parse(localStorage.getItem('industryProjects') || '[]');
+      const project = projects.find(p => p.id === projectId);
+
+      if (project) {
+        document.getElementById('title').value = project.title || '';
+        document.getElementById('description').value = project.desc || '';
+        document.getElementById('category').value = project.cat || '';
+        document.getElementById('demand').value = project.demand || '';
+        document.getElementById('wage').value = project.wage || '';
+        
+        if (project.skills && Array.isArray(project.skills)) {
+          skills = [...project.skills];
+          renderSkills();
+        }
+      }
+
+      document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (project) {
+          project.title = document.getElementById('title').value.trim();
+          project.desc = document.getElementById('description').value.trim();
+          project.cat = document.getElementById('category').value.trim();
+          project.demand = document.getElementById('demand').value.trim();
+          project.wage = document.getElementById('wage').value.trim();
+          project.skills = skills;
+
+          localStorage.setItem('industryProjects', JSON.stringify(projects));
+          window.location.href = './projects-manage.html';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+

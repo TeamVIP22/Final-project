@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vinex - Industry</title>
+  <link rel="icon" href="uploads/logo-main.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #2B82C8;
+      --brand-dark: #0E4A78;
+      --brand-rgb: 43,130,200;
+      --brand-dark-rgb: 14,74,120;
+      --primary: var(--brand);
+      --accent: #4CC3E6;
+      --accent-rgb: 76,195,230;
+      --bg: #ffffff;
+      --bg-light: #f4fbff;
+      --text: #0F1724;
+      --muted: #6b7280;
+      --border: rgba(var(--brand-dark-rgb),0.08);
+      --radius: 10px;
+      --shadow: 0 8px 30px rgba(var(--brand-dark-rgb),0.12);
+      --transition: 0.22s ease;
+      --logo-size: 50px;
+      --header-h: 72px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: var(--text);
+      background: #f5f8ff;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 18px rgba(var(--brand-dark-rgb), 0.04);
+      z-index: 1000;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand .logo { width: var(--logo-size); height: var(--logo-size); object-fit: contain; border-radius: 8px; }
+
+    .brand-title {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: 30px;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-left: 4px;
+    }
+
+    .site-nav { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 18px; align-items:center; }
+    .site-nav a { color: var(--primary); text-decoration: none; font-weight:600; padding: 8px 10px; border-radius:8px; }
+    .site-nav a.active { background: var(--bg-light); }
+    .site-nav a:hover { background: var(--bg-light); }
+
+    .btn-link {
+      background: transparent;
+      border: none;
+      color: var(--primary);
+      font-weight: 500;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 8px 2px;
+      border-radius: 8px;
+      transition: var(--transition);
+      font-size: 14px;
+    }
+
+    .btn-link:hover {
+      background: var(--bg-light);
+    }
+
+    .profile-wrap { position: relative; display: flex; align-items: center; gap: 12px; }
+    .profile-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; border: none; cursor: pointer; padding: 6px 8px; border-radius: 8px;
+    }
+    .profile-avatar { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; box-shadow: var(--shadow); }
+    .profile-meta { text-align: right; display: none; }
+    .profile-name { font-weight: 700; color: var(--primary); font-size: 14px; }
+    .profile-role { font-size: 12px; color: var(--muted); }
+
+    .profile-menu {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow);
+      min-width: 160px; overflow: hidden; display: none;
+    }
+    .profile-menu a, .profile-menu button { display: block; padding: 10px 12px; text-decoration: none; color: var(--text); background: transparent; border: none; width: 100%; text-align: left; cursor: pointer; }
+    .profile-menu a:hover, .profile-menu button:hover { background: var(--bg-light); }
+
+    main { padding-top: calc(var(--header-h) + 24px); }
+
+    .container {
+      padding: 24px;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+    }
+
+    .profile-header {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .profile-avatar-large {
+      width: 230px; height: 230px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin: 0;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-header h1 {
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 28px;
+    }
+
+    .profile-header .role {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .profile-section {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .profile-section h2 {
+      color: var(--primary);
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      color: var(--text);
+      background: var(--bg-light);
+    }
+
+      .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      background: #fff;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(var(--brand-rgb),0.08);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+
+    @media (max-width: 800px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
+      font-size: 13px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.18);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-light);
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .skill-badge {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--primary);
+    }
+
+    .site-footer { margin-top: 28px; padding: 28px 0; background: transparent; color: var(--muted); }
+    .footer-inner { max-width:none; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:12px; padding: 0 6%;}
+    .footer-logo { width:48px; height:48px; object-fit:contain; }
+    .footer-bottom {
+      padding: 0 6%;
+      margin-top: 34px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 12px;
+    }
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-brand p {
+      margin: 0;
+    }
+
+    @media (max-width: 800px) {
+      .profile-header {
+        padding: 24px;
+      }
+
+      .profile-stats {
+        gap: 16px;
+      }
+
+      .form-group {
+        margin-bottom: 12px;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+    }
+
+    .toast {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: var(--primary);
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: 0.3s ease;
+      z-index: 9999;
+      font-weight: 700;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="projects-manage.html">
+      <img src="../uploads/logo-main.png" alt="logo" class="logo">
+      <strong class="brand-title">Vinex</strong>
+    </a>
+
+    <div class="profile-wrap">
+      <div class="profile-meta" id="headerProfileMeta" style="display:none; text-align:right;">
+        <div class="profile-name" id="headerProfileName"></div>
+        <div class="profile-role" id="headerCompanyName"></div>
+      </div>
+      <button class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+        <img src="../uploads/pfp.jpg" alt="avatar" class="profile-avatar">
+      </button>
+
+      <div class="profile-menu" id="profileMenu" role="menu" aria-hidden="true">
+        <a href="projects-manage.html">Back to Dashboard</a>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="card-grid">
+      <div class="profile-header">
+        <div style="display:flex; gap:20px; align-items:center;">
+          <img src="../uploads/pfp.jpg" alt="profile avatar" class="profile-avatar-large">
+          <div style="flex:1; text-align:center;">
+            <h1 id="companyName">Nama Perusahaan</h1>
+            <p class="role" id="companyType">Tipe Perusahaan</p>
+          </div>
+        </div>
+
+        <div class="profile-stats" style="margin-top:20px;">
+          <div class="stat">
+            <div class="stat-value" id="projectsCount">0</div>
+            <div class="stat-label">Active Projects</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="requestsCount">0</div>
+            <div class="stat-label">New Requests</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h2>Basic Information</h2>
+        <form id="basicForm">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required readonly>
+          </div>
+          <div class="form-group">
+            <label for="companyNameInput">Company Name</label>
+            <input type="text" id="companyNameInput" name="companyNameInput" placeholder="Enter company name" required>
+          </div>
+          <div class="form-group">
+            <label for="picName">PIC (Person in Charge)</label>
+            <input type="text" id="picName" name="picName" placeholder="Enter PIC name" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="08xxxxxxxxxx">
+          </div>
+          <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="profile-section">
+        <h2>Company Information</h2>
+        <form id="companyForm">
+          <div class="form-group">
+            <label for="companyType">Company Type</label>
+            <input type="text" id="companyTypeInput" name="companyTypeInput" placeholder="e.g. Technology, Manufacturing, Services">
+          </div>
+          <div class="form-group">
+            <label for="website">Website</label>
+            <input type="url" id="website" name="website" placeholder="https://example.com">
+          </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" placeholder="Company address">
+          </div>
+          <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Save Company Info</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="profile-section">
+        <h2>About Company</h2>
+        <form id="aboutForm">
+          <div class="form-group">
+            <label for="description">Company Description</label>
+            <textarea id="description" name="description" placeholder="Tell us about your company..."></textarea>
+          </div>
+          <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Save Description</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="profile-section">
+        <h2>Account Settings</h2>
+        <div class="form-group">
+          <label>Account Status</label>
+          <p style="color: var(--primary); font-weight: 600; margin-top: 8px;">✓ Active & Verified</p>
+        </div>
+        <div class="form-group">
+          <label>Member Since</label>
+          <p style="color: var(--muted); margin-top: 8px;" id="memberSince">Loading...</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-danger" id="logoutBtnSection">Logout from Account</button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../uploads/logo-main.png" alt="logo" class="footer-logo">
+        <div>
+          <p class="muted">Micro projects & skill-proof hub for students and industry partners.</p>
+        </div> 
+      </div>
+
+      <div class="footer-links">
+        <a href="projects-manage.html">Dashboard</a>
+        <a href="requests.html">Requests</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>Copyright © <span id="yearSpan">2025</span> Vinix Seven Indonesia</small>
+      <script>
+        document.getElementById('yearSpan').textContent = new Date().getFullYear();
+      </script>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const industryLogin = localStorage.getItem('industryLogin');
+      if (!industryLogin) {
+        window.location.href = './index.html';
+        return;
+      }
+      
+      const loginData = JSON.parse(industryLogin);
+      const industryProfile = JSON.parse(localStorage.getItem('industryProfile') || '{}');
+      const industryRegistry = JSON.parse(localStorage.getItem('industryRegistry') || '{}');
+      const registeredData = industryRegistry[loginData.email.toLowerCase()] || {};
+      
+      // Combine data
+      const companyName = industryProfile.companyName || registeredData.companyName || loginData.name || 'Perusahaan';
+      const picName = industryProfile.contactPerson || registeredData.contactPerson || loginData.email || 'Guest';
+      const phone = industryProfile.phone || registeredData.phone || '';
+      const companyType = industryProfile.industryType || registeredData.industryType || industryProfile.companyType || registeredData.companyType || '';
+      const website = industryProfile.website || registeredData.website || '';
+      const address = industryProfile.address || registeredData.address || '';
+      const description = industryProfile.description || registeredData.description || '';
+
+      // Display header
+      const headerProfileMeta = document.getElementById('headerProfileMeta');
+      const headerProfileName = document.getElementById('headerProfileName');
+      const headerCompanyName = document.getElementById('headerCompanyName');
+      if (headerProfileName) headerProfileName.textContent = picName;
+      if (headerCompanyName) headerCompanyName.textContent = companyName;
+      if (headerProfileMeta) headerProfileMeta.style.display = 'block';
+
+      // Set active nav
+      const currentPage = window.location.pathname.split('/').pop() || 'profile.html';
+      document.querySelectorAll('.site-nav a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === currentPage) {
+          link.classList.add('active');
+        }
+      });
+
+      // Profile menu toggle
+      const profileBtn = document.getElementById('profileBtn');
+      const profileMenu = document.getElementById('profileMenu');
+      profileBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.profile-wrap')) {
+          profileMenu.style.display = 'none';
+        }
+      }, true);
+
+      // Fill form fields
+      document.getElementById('email').value = loginData.email || '';
+      document.getElementById('companyNameInput').value = companyName;
+      document.getElementById('picName').value = picName;
+      document.getElementById('phone').value = phone;
+      document.getElementById('companyTypeInput').value = companyType;
+      document.getElementById('website').value = website;
+      document.getElementById('address').value = address;
+      document.getElementById('description').value = description;
+      
+      // Display profile header
+      document.getElementById('companyName').textContent = companyName;
+      document.getElementById('companyType').textContent = companyType || 'Company';
+
+      const loginDate = new Date(loginData.loginTime || new Date());
+      document.getElementById('memberSince').textContent = loginDate.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+
+      // Load stats
+      const projects = JSON.parse(localStorage.getItem('industryProjects') || '[]');
+      const requests = JSON.parse(localStorage.getItem('studentRequests') || '[]');
+      const newRequests = requests.filter(r => r.status === 'new' || r.status === 'pending').length;
+      
+      document.getElementById('projectsCount').textContent = projects.length;
+      document.getElementById('requestsCount').textContent = newRequests;
+
+      // Form submissions
+      document.getElementById('basicForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const profile = JSON.parse(localStorage.getItem('industryProfile') || '{}');
+        profile.companyName = document.getElementById('companyNameInput').value;
+        profile.contactPerson = document.getElementById('picName').value;
+        profile.phone = document.getElementById('phone').value;
+        localStorage.setItem('industryProfile', JSON.stringify(profile));
+        
+        document.getElementById('companyName').textContent = profile.companyName;
+        headerProfileName.textContent = profile.contactPerson;
+        showToast('Profile updated successfully!');
+      });
+
+      document.getElementById('companyForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const profile = JSON.parse(localStorage.getItem('industryProfile') || '{}');
+        profile.industryType = document.getElementById('companyTypeInput').value;
+        profile.companyType = document.getElementById('companyTypeInput').value;
+        profile.website = document.getElementById('website').value;
+        profile.address = document.getElementById('address').value;
+        localStorage.setItem('industryProfile', JSON.stringify(profile));
+        
+        document.getElementById('companyType').textContent = profile.industryType || 'Company';
+        showToast('Company information updated successfully!');
+      });
+
+      document.getElementById('aboutForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const profile = JSON.parse(localStorage.getItem('industryProfile') || '{}');
+        profile.description = document.getElementById('description').value;
+        localStorage.setItem('industryProfile', JSON.stringify(profile));
+        showToast('Company description updated successfully!');
+      });
+
+      // Logout
+      const logoutBtns = document.querySelectorAll('#logoutBtn, #logoutBtnSection');
+      logoutBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          localStorage.removeItem('industryLogin');
+          localStorage.removeItem('industryProfile');
+          window.location.href = './index.html';
+        });
+      });
+
+      function showToast(msg) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = msg;
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('show'), 10);
+
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          profileMenu.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

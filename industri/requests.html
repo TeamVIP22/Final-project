@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vinex - Industry</title>
+  <link rel="icon" href="../uploads/logo-main.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #2B82C8;
+      --brand-dark: #0E4A78;
+      --brand-rgb: 43,130,200;
+      --brand-dark-rgb: 14,74,120;
+      --primary: var(--brand);
+      --accent: #4CC3E6;
+      --accent-rgb: 76,195,230;
+      --bg: #ffffff;
+      --bg-light: #f4fbff;
+      --text: #0F1724;
+      --muted: #6b7280;
+      --border: rgba(var(--brand-dark-rgb),0.08);
+      --radius: 10px;
+      --shadow: 0 8px 30px rgba(var(--brand-dark-rgb),0.12);
+      --transition: 0.22s ease;
+      --logo-size: 50px;
+      --header-h: 72px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    
+    body {
+      font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color: var(--text);
+      background: #f5f8ff;
+      min-height: 100vh;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 24px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 18px rgba(var(--brand-dark-rgb), 0.04);
+      z-index: 1000;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand .logo { width: var(--logo-size); height: var(--logo-size); object-fit: contain; border-radius: 8px; }
+    .brand-title {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 200;
+      font-size: 30px;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-left: 4px;
+    }
+
+    .request-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-row .btn {
+      flex: 1;
+    }
+
+    .site-nav { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 18px; align-items:center; }
+    .site-nav a { color: var(--primary); text-decoration: none; font-weight:600; padding: 8px 10px; border-radius:8px; }
+    .site-nav a.active { background: var(--bg-light); }
+    .site-nav a:hover { background: var(--bg-light); }
+
+    .profile-meta { text-align: right; display: none; }
+    .profile-name { font-weight: 700; color: var(--primary); font-size: 14px; }
+    .profile-role { font-size: 12px; color: var(--muted); }
+
+    .profile-menu {
+      position: absolute; right: 0; top: calc(100% + 8px);
+      background: #fff; border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow);
+      min-width: 160px; overflow: hidden; display: none;
+    }
+    .profile-menu a, .profile-menu button { display: block; padding: 10px 12px; text-decoration: none; color: var(--text); background: transparent; border: none; width: 100%; text-align: left; cursor: pointer; }
+    .profile-menu a:hover, .profile-menu button:hover { background: var(--bg-light); }
+
+    .profile-wrap { position: relative; display: flex; align-items: center; gap: 12px; }
+    .profile-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; border: none; cursor: pointer; padding: 6px 8px; border-radius: 8px;
+    }
+    .profile-avatar { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; }
+
+    main { padding-top: calc(var(--header-h) + 24px); }
+    .container { padding: 24px; width: 100%; max-width: none; margin: 0; }
+
+    .page-header { margin-bottom: 28px; }
+    .page-title { font-size: 32px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .page-subtitle { color: var(--muted); font-size: 14px; }
+
+    .requests-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .request-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .request-header {
+      background: linear-gradient(135deg, rgba(var(--brand-rgb), 0.1), rgba(var(--accent-rgb), 0.1));
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .student-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 2px solid var(--border);
+    }
+
+    .student-info h3 {
+      margin: 0;
+      color: var(--primary);
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .student-info p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .request-body {
+      padding: 20px;
+    }
+
+    .request-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .request-meta {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-dark);
+    }
+
+    .btn-secondary {
+      background: var(--bg-light);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      grid-column: 1 / -1;
+      color: var(--muted);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: var(--transition);
+    }
+
+    .filter-btn.active {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    .site-footer {
+      margin-top: 28px;
+      padding: 28px 0;
+      background: transparent;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      max-width: none;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 0 6%;
+    }
+
+    .footer-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .footer-bottom {
+      padding: 0 6%;
+      margin-top: 34px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-brand p {
+      margin: 0;
+    }
+
+    /* Notification Modal Styles */
+    .notification-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2001;
+      padding: 20px;
+    }
+
+    .notification-modal.show {
+      display: flex;
+    }
+
+    .notification-modal-content {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 32px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .notification-modal-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .notification-modal-title {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .notification-modal-message {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .notification-modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .notification-btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .notification-btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .notification-btn-primary:hover {
+      background: var(--brand-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--brand-rgb), 0.2);
+    }
+
+    .notification-btn-secondary {
+      background: var(--bg-light);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .notification-btn-secondary:hover {
+      border-color: var(--brand);
+      color: var(--brand);
+    }
+
+    @media (max-width: 900px) {
+      .site-nav {
+        display: none;
+      }
+
+      .requests-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        padding: 16px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .requests-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="projects-manage.html" class="brand">
+      <img src="../uploads/logo-main.png" alt="Vinex" class="logo">
+      <h2 class="brand-title">Vinex</h2>
+    </a>
+
+    <nav class="site-nav">
+      <a href="projects-manage.html">Dashboard</a>
+      <a href="requests.html">Requests</a>
+    </nav>
+
+    <div class="profile-wrap">
+      <div class="profile-meta" id="headerProfileMeta" style="display:none; text-align:right;">
+        <div class="profile-name" id="headerPicName"></div>
+        <div class="profile-role" id="headerCompanyName"></div>
+      </div>
+      <button class="profile-btn" id="profileBtn">
+        <img src="../uploads/pfp.jpg" alt="Profile" class="profile-avatar">
+      </button>
+
+      <div class="profile-menu" id="profileMenu">
+        <a href="profile.html">View Profile</a>
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">Project Requests</h1>
+        <p class="page-subtitle">Students requesting to work on your projects</p>
+      </div>
+
+      <div class="filter-buttons">
+        <button class="filter-btn active" onclick="filterRequests('all')">All</button>
+        <button class="filter-btn" onclick="filterRequests('pending')">Pending</button>
+        <button class="filter-btn" onclick="filterRequests('accepted')">Accepted</button>
+        <button class="filter-btn" onclick="filterRequests('rejected')">Rejected</button>
+      </div>
+
+      <div class="requests-container" id="requestsContainer">
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <p>No requests yet</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let allRequests = [];
+    let currentFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const profileBtn = document.getElementById('profileBtn');
+      const profileMenu = document.getElementById('profileMenu');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const headerProfileMeta = document.getElementById('headerProfileMeta');
+      const headerPicName = document.getElementById('headerPicName');
+      const headerCompanyName = document.getElementById('headerCompanyName');
+
+      // Check if user is logged in
+      const industryLogin = localStorage.getItem('industryLogin');
+      if (!industryLogin) {
+        window.location.href = './index.html';
+        return;
+      }
+
+      const loginData = JSON.parse(industryLogin);
+      
+      // Get profile data to display PIC name and company name
+      const industryProfile = JSON.parse(localStorage.getItem('industryProfile') || '{}');
+      const industryRegistry = JSON.parse(localStorage.getItem('industryRegistry') || '{}');
+      const registeredData = industryRegistry[loginData.email.toLowerCase()] || {};
+      
+      // Get PIC name and company name
+      const picName = industryProfile.contactPerson || registeredData.contactPerson || loginData.name || 'PIC';
+      const companyName = industryProfile.companyName || registeredData.companyName || 'Perusahaan';
+      
+      // Display PIC name and company name in header
+      headerPicName.textContent = picName;
+      headerCompanyName.textContent = companyName;
+      headerProfileMeta.style.display = 'block';
+
+      // Profile menu toggle
+      profileBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.profile-wrap')) {
+          profileMenu.style.display = 'none';
+        }
+      }, true);
+
+      // Logout
+      logoutBtn.addEventListener('click', function() {
+        localStorage.removeItem('industryLogin');
+        localStorage.removeItem('industryProfile');
+        window.location.href = './index.html';
+      });
+
+      // Load dummy requests
+      allRequests = JSON.parse(localStorage.getItem('studentRequests') || '[]');
+      if (allRequests.length === 0) {
+        // Add some dummy data
+        allRequests = [
+          {
+            id: 1,
+            studentName: 'Ahmad Wijaya',
+            studentEmail: 'ahmad@example.com',
+            university: 'UI',
+            major: 'Computer Science',
+            projectTitle: 'Mobile App Development',
+            skills: ['React Native', 'JavaScript'],
+            bio: 'Passionate developer with 2 years of experience',
+            status: 'pending',
+            requestDate: new Date().toISOString()
+          },
+          {
+            id: 2,
+            studentName: 'Siti Nurhaliza',
+            studentEmail: 'siti@example.com',
+            university: 'ITB',
+            major: 'Information Systems',
+            projectTitle: 'Cross-Platform App',
+            skills: ['Flutter', 'Dart'],
+            bio: 'Full-stack developer interested in mobile development',
+            status: 'accepted',
+            requestDate: new Date(Date.now() - 86400000).toISOString()
+          },
+          {
+            id: 3,
+            studentName: 'Radit Pratama',
+            studentEmail: 'radit@example.com',
+            university: 'UNPAD',
+            major: 'Software Engineering',
+            projectTitle: 'Web Application Development',
+            skills: ['React', 'Node.js'],
+            bio: 'Frontend developer with experience in React and Node.js',
+            status: 'accepted',
+            requestDate: new Date(Date.now() - 172800000).toISOString()
+          },
+          {
+            id: 4,
+            studentName: 'Nanda Putra',
+            studentEmail: 'nabda@example.com',
+            university: 'UGM',
+            major: 'Computer Engineering',
+            projectTitle: 'IoT Device Development',
+            skills: ['Python', 'Arduino'],
+            bio: 'Passionate about IoT and embedded systems development',
+            status: 'pending',
+            requestDate: new Date(Date.now() - 259200000).toISOString()
+          }
+        ];
+        localStorage.setItem('studentRequests', JSON.stringify(allRequests));
+      }
+
+      renderRequests();
+    });
+
+    function filterRequests(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      renderRequests();
+    }
+
+    function renderRequests() {
+      const container = document.getElementById('requestsContainer');
+      
+      const filtered = currentFilter === 'all' 
+        ? allRequests 
+        : allRequests.filter(r => r.status === currentFilter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <p>No requests found</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(request => `
+        <div class="request-card">
+          <div class="request-header">
+            <img src="../uploads/pfp.jpg" alt="${request.studentName}" class="student-avatar">
+            <div class="student-info">
+              <h3>${request.studentName}</h3>
+              <p>${request.university} - ${request.major}</p>
+            </div>
+          </div>
+
+          <div class="request-body">
+            <div class="request-title">Requested Project</div>
+            <p style="color: var(--muted); font-size: 13px; margin-bottom: 16px;">${request.projectTitle}</p>
+
+            <div class="request-meta">
+              <span>📚 Skills: ${request.skills.join(', ')}</span>
+            </div>
+
+            <p style="color: var(--muted); font-size: 13px; margin-bottom: 16px;">${request.bio}</p>
+
+            <div class="request-actions">
+              <div class="action-row">
+                <button class="btn btn-primary" onclick="viewStudent(${request.id})">
+                  View Profile
+                </button>
+              </div>
+
+              ${request.status === 'pending' ? `
+                <div class="action-row">
+                  <button class="btn btn-primary" onclick="acceptRequest(${request.id})">
+                    ✓ Accept
+                  </button>
+                  <button class="btn btn-secondary" onclick="rejectRequest(${request.id})">
+                    ✗ Reject
+                  </button>
+                </div>
+              ` : ``}
+
+            </div>
+
+            ${request.status !== 'pending' ? `
+              <div style="padding: 12px; background: var(--bg-light); border-radius: 6px; margin-top: 12px; text-align: center; font-size: 12px; color: var(--muted);">
+                Status: <strong style="color: var(--primary);">${request.status.toUpperCase()}</strong>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function acceptRequest(id) {
+      const request = allRequests.find(r => r.id === id);
+      if (request) {
+        request.status = 'accepted';
+        localStorage.setItem('studentRequests', JSON.stringify(allRequests));
+        
+        // Create or update project assignment
+        const projects = JSON.parse(localStorage.getItem('industryProjects') || '[]');
+        
+        // Find or create project based on projectTitle
+        let project = projects.find(p => p.title === request.projectTitle);
+        
+        if (project) {
+          // Update existing project
+          project.status = 'In Progress';
+          project.studentName = request.studentName;
+          project.studentEmail = request.studentEmail;
+          project.requestId = request.id;
+          project.acceptanceDate = new Date().toISOString();
+        }
+        
+        localStorage.setItem('industryProjects', JSON.stringify(projects));
+        renderRequests();
+        
+        // Show success message
+        showNotification('Request Accepted', `${request.studentName} has been assigned to the project "${request.projectTitle}". Project status changed to "In Progress".`, '✓');
+      }
+    }
+
+    function rejectRequest(id) {
+      const request = allRequests.find(r => r.id === id);
+      if (request) {
+        request.status = 'rejected';
+        localStorage.setItem('studentRequests', JSON.stringify(allRequests));
+        
+        // Keep project as Available if it was assigned
+        const projects = JSON.parse(localStorage.getItem('industryProjects') || '[]');
+        const project = projects.find(p => p.title === request.projectTitle && p.requestId === request.id);
+        
+        if (project) {
+          // Reset project to Available
+          project.status = 'Available';
+          delete project.studentName;
+          delete project.studentEmail;
+          delete project.requestId;
+          delete project.acceptanceDate;
+          localStorage.setItem('industryProjects', JSON.stringify(projects));
+        }
+        
+        renderRequests();
+        showNotification('Request Rejected', `Request from ${request.studentName} for "${request.projectTitle}" has been rejected. Project remains available.`, '✗');
+      }
+    }
+
+    function viewStudent(id) {
+      window.location.href = `student-info.html?id=${id}`;
+    }
+
+    // Notification Modal Functions
+    function showNotification(title, message, icon = '✓') {
+      document.getElementById('notificationIcon').textContent = icon;
+      document.getElementById('notificationTitle').textContent = title;
+      document.getElementById('notificationMessage').textContent = message;
+      document.getElementById('notificationOkBtn').onclick = closeNotification;
+      document.getElementById('notificationModal').classList.add('show');
+    }
+
+    function closeNotification() {
+      document.getElementById('notificationModal').classList.remove('show');
+    }
+  </script>
+
+  <div class="notification-modal" id="notificationModal">
+    <div class="notification-modal-content">
+      <div class="notification-modal-icon" id="notificationIcon">ℹ️</div>
+      <div class="notification-modal-title" id="notificationTitle">Notification</div>
+      <div class="notification-modal-message" id="notificationMessage">This is a notification message</div>
+      <div class="notification-modal-actions">
+        <button class="notification-btn notification-btn-primary" id="notificationOkBtn" onclick="closeNotification()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../uploads/logo-main.png" alt="logo" class="footer-logo">
+        <div>
+          <p class="muted">Micro projects & skill-proof hub for students and industry partners.</p>
+        </div> 
+      </div>
+
+      <div class="footer-links">
+        <a href="projects-manage.html">Dashboard</a>
+        <a href="requests.html">Requests</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>Copyright © <span id="yearSpan">2025</span> Vinix Seven Indonesia</small>
+      <script>
+        document.getElementById('yearSpan').textContent = new Date().getFullYear();
+      </script>
+    </div>
+  </footer>
+</body>
+</html>
